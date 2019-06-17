@@ -1,1 +1,47 @@
-/* You can add global styles to this file, and also import other style files */
+.navbar{
+    p{
+        color: #FFF;
+        font-size: 11px;
+        margin: 0;
+        padding: 0;
+    }
+    .direita{
+        text-align: right;
+    }
+    h1{
+        i{
+            float: left;
+            margin-right: 10px;
+        }
+        color: #FFF;
+        font-size: 20px;
+        font-weight: lighter;
+    }
+}
+
+.container{
+
+    padding: 20px 10px;
+
+    .page-header {
+        margin-top: 0;
+        font-size: 20px;
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #EAEAEA;
+        i {
+            float: left;
+            margin-right: 10px;
+            font-size: 20px;
+        }
+    }
+
+}
+
+
+.historia{
+    list-style: square;
+    li{
+        
+    }
+}

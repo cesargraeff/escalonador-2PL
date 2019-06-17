@@ -1,0 +1,152 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary p-3">
+    <div class="container-fluid">
+        <h1>
+            <i class="material-icons text-white">schedule</i>
+            Escalonador 2PL Strict
+        </h1>
+        <div class="direita">
+            <p>UNIVERSIDADE DE CAXIAS DO SUL</p>
+            <p>ASPECTOS DE IMPLEMENTAÇÂO DE BANCO DE DADOS</p>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h2 class="page-header">
+                <i class="material-icons">settings_ethernet</i>
+                Transações
+            </h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+
+            <div class="row my-5" *ngIf="!transactions.length">
+                <div class="col text-center">
+                    <i class="material-icons">filter_none</i>
+                    <p>Nenhuma transação cadastrada</p>
+                </div>
+            </div>
+
+            <table class="table table-striped" *ngIf="transactions.length">
+                <tr>
+                    <th style="width: 50px;">ID</th>
+                    <th>Transação</th>
+                    <th style="width: 50px;"></th>
+                </tr>
+                <tr *ngFor="let t of transactions; let i = index">
+                    <td><b>{{t.id}}</b></td>
+                    <td><span class="small">START</span>  {{t.historia}} <span class="small">COMMIT</span></td>
+                    <td>
+                        <a class="btn btn-sm btn-danger" (click)="deleteTransaction(i)">
+                            <i class="material-icons text-white" style="font-size: 14px;">delete</i>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col">
+
+            <form [formGroup]="transactionForm" (ngSubmit)="addTransaction()">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="id">ID</label>
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">T</span>
+                                </div>
+                                <input type="number" name="id" id="id" class="form-control form-control-sm" formControlName="id">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <p class="m-0 p-0"><b>Operações:</b></p>
+                        <p class="m-0 p-0">r[dado] - LEITURA</p>
+                        <p class="m-0 p-0">w[dado] - ESCRITA</p>
+                    </div>
+                </div>
+    
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="transacao">Execução</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">START</span>
+                                </div>
+                                <input type="text" class="form-control" formControlName="historia" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text">COMMIT</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="row">
+                    <div class="col">
+                        <button type="submit" class="btn btn-success text-white btn-sm float-right">
+                            <i class="material-icons float-left text-white mr-2" style="font-size: 18px;">add</i>
+                            Adicionar
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <h2 class="page-header">
+                <i class="material-icons">play_arrow</i>
+                Executar
+            </h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="row mb-3">
+                <div class="ml-3">
+                    <select class="form-control"  [(ngModel)]="TSel" multiple style="height: 130px;" >
+                        <option *ngFor="let t of transactions; let i = index" [value]="i">T{{t.id}}</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <h3>Selecione as transações ao lado</h3>
+                    <p class="small">Para selecionar múltiplas utilize a tecla Ctrl</p>
+                    <a class="btn btn-success text-white" (click)="execute(TSel)">
+                        <i class="material-icons text-white float-left">play_arrow</i>
+                        Executar
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <h2 class="page-header">
+                        <i class="material-icons">history</i>
+                        História Gerada
+                    </h2>
+                </div>
+            </div>
+        
+            <div class="row">
+                <div class="col">
+                    <ul class="historia">
+                        <li *ngFor="let h of historia">
+                            {{h}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+</div>
