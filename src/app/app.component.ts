@@ -11,6 +11,7 @@ export class AppComponent implements OnInit {
   transactions: any[] = [];
   transactionForm: FormGroup;
   historia: string[] = [];
+  deadlock: boolean = false;
 
   constructor(
     private fb: FormBuilder
@@ -37,7 +38,9 @@ export class AppComponent implements OnInit {
     });
 
     const escalonador: Escalonador = new Escalonador(t);
-    this.historia = escalonador.escalonar();
+    const res = escalonador.escalonar();
+    this.historia = res.historia;
+    this.deadlock = res.deadlock;
 
     console.log(escalonador);
   }

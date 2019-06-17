@@ -8,6 +8,8 @@ export class Escalonador
     private transacoes: Transacao[] = [];
     private bloqueios: Bloqueio[] = [];
     private historia: string[] = [];
+
+    private hasDeadlock: boolean = false;
     
     constructor(transacoes: any[]){
         for(let i=0; i < transacoes.length; i++){
@@ -50,16 +52,30 @@ export class Escalonador
             }
 
             if(!executou){
-                alert('DEADLOCK');
                 this.deadlock();
-                break;
+                this.hasDeadlock = true;
+                //break;
             }
         }
 
-        return this.historia;
+        return {
+            historia : this.historia,
+            deadlock : this.hasDeadlock
+        };
     }
 
     private deadlock(){
+
+        let aleatorio = Math.floor(Math.random() * this.transacoes.length);
+        console.log(aleatorio);
+        //aleatorio = 1;
+        const transacao: Transacao = this.transacoes[aleatorio];
+        const id = transacao.getId();
+        this.historia = this.historia.filter((value, index) => {
+            return value.indexOf('r'+id+'[') == -1 && value.indexOf('w'+id+'[') == -1 && value.indexOf('s'+id+'[') == -1 && value.indexOf('x'+id+'[') == -1;
+        });
+        this.desbloqueia(id,true);
+        transacao.abort();
 
     }
 
@@ -100,12 +116,12 @@ export class Escalonador
                             }
 
                             // TRANSFORMA EM EXCLUSIVO
-
                             if(!existe){
                                 adiciona = false;
                                 bloqueio.tipo = Bloqueio.EXCLUSIVO;
-                                const bloq = this.historia.indexOf('ls'+bloqueio.transacao+'['+bloqueio.dado+']');
-                                this.historia[bloq] = 'lx'+bloqueio.transacao+'['+bloqueio.dado+']';
+                                //const bloq = this.historia.indexOf('ls'+bloqueio.transacao+'['+bloqueio.dado+']');
+                                //this.historia[bloq] = 'lx'+bloqueio.transacao+'['+bloqueio.dado+']';
+                                this.historia.push('lx'+bloqueio.transacao+'['+bloqueio.dado+']');
                             }
                             
 
@@ -132,11 +148,13 @@ export class Escalonador
     }
 
 
-    private desbloqueia(transacao: number){
+    private desbloqueia(transacao: number, deadlock: boolean = false){
         for(let i = 0; i< this.bloqueios.length; i++){
             const bloqueio: Bloqueio = this.bloqueios[i];
             if(bloqueio.transacao == transacao){
-                this.historia.push(`u${bloqueio.tipo}${bloqueio.transacao}[${bloqueio.dado}]`);
+                if(!deadlock){
+                    this.historia.push(`u${bloqueio.tipo}${bloqueio.transacao}[${bloqueio.dado}]`);
+                }
                 this.bloqueios.splice(i,1);
                 i--;
             }

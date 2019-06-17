@@ -101,15 +101,14 @@
 
     <div class="row">
         <div class="col">
-            <h2 class="page-header">
-                <i class="material-icons">play_arrow</i>
-                Executar
-            </h2>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <h2 class="page-header">
+                        <i class="material-icons">play_arrow</i>
+                        Executar
+                    </h2>
+                </div>
+            </div>
             <div class="row mb-3">
                 <div class="ml-3">
                     <select class="form-control"  [(ngModel)]="TSel" multiple style="height: 130px;" >
@@ -133,6 +132,12 @@
                         <i class="material-icons">history</i>
                         História Gerada
                     </h2>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="deadlock">
+                <div class="col">
+                    <p class="text-danger">DEADLOCK!</p>
                 </div>
             </div>
         
